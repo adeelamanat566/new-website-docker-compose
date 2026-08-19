@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Grocery Store</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<nav>
+    <h2>Grocery Store</h2>
+    <a href="/">Products</a>
+    <a href="/products/add">Add Product</a>
+    <a href="/customers">Customers</a>
+    <a href="/orders">Orders</a>
+</nav>
+
+<div class="container">
+    <h1>Products</h1>
+    <table>
+        <tr><th>ID</th><th>Name</th><th>Category</th><th>Price</th><th>Stock</th><th>Action</th></tr>
+        {% for p in products %}
+        <tr>
+            <td>{{ p.id }}</td><td>{{ p.name }}</td><td>{{ p.category }}</td>
+            <td>Rs. {{ p.price }}</td><td>{{ p.stock }}</td>
+            <td>
+                <form method="POST" action="/products/delete/{{ p.id }}">
+                    <button class="danger">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+</body>
+</html>

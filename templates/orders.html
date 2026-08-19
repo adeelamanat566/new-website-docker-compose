@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+<head><title>Orders</title><link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"></head>
+<body>
+<nav><h2>Grocery Store</h2><a href="/">Products</a><a href="/products/add">Add Product</a><a href="/customers">Customers</a></nav>
+<div class="container"><h1>Orders</h1>
+<table><tr><th>ID</th><th>Customer</th><th>Date</th><th>Total</th><th>Status</th></tr>
+{% for o in orders %}<tr><td>{{ o.id }}</td><td>{{ o.customer }}</td><td>{{ o.order_date }}</td><td>Rs. {{ o.total_amount }}</td><td>{{ o.status }}</td></tr>{% endfor %}
+</table></div>
+</body>
+</html>
