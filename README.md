@@ -29,9 +29,9 @@ Install MySQL and run:
 
 You can export them:
 
-    export DB_HOST=localhost
+    export DB_HOST=mysql
     export DB_USER=root
-    export DB_PASSWORD=root
+    export DB_PASSWORD=adeel
     export DB_NAME=grocery_db
 
 ### 4. Start Flask
