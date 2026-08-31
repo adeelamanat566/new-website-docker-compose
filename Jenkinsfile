@@ -2,18 +2,22 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout Test') {
+
+        stage('Build') {
             steps {
-                echo 'GitHub code successfully checked out'
-                sh 'pwd'
-                sh 'ls -la'
+                sh 'docker compose build'
             }
         }
 
-        stage('Docker Check') {
+        stage('Deploy') {
             steps {
-                sh 'docker --version'
-                sh 'docker compose version'
+                sh 'docker compose up -d'
+            }
+        }
+
+        stage('Check') {
+            steps {
+                sh 'docker compose ps'
             }
         }
     }
