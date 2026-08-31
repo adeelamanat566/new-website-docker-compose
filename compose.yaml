@@ -5,8 +5,8 @@ services:
     ports: 
       - "3306:3306"
     environment:  
-      - MYSQL_ROOT_PASSWORD:adeel
-      - MYSQL_DATABASE:grocery_db
+      - MYSQL_ROOT_PASSWORD: adeel
+      - MYSQL_DATABASE: grocery_db
     
     volumes:
       - "mysql-data:/var/lib/mysql"
