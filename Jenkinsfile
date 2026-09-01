@@ -1,56 +1,57 @@
+```groovy
 pipeline {
-agent any
+    agent any
 
+    stages {
 
-stages {
+        stage('Build') {
+            steps {
+                sh 'docker compose config'
+                sh 'docker compose build'
+            }
+        }
 
-    stage('Build') {
-        steps {
-            sh 'docker compose -f compose.test.yaml build'
+        stage('Test') {
+            steps {
+                sh 'docker compose up -d'
+
+                sh 'docker compose ps'
+
+                sh 'sleep 10'
+
+                sh 'curl -f http://localhost:5000'
+            }
+        }
+
+        stage('Approval') {
+            steps {
+                input(
+                    message: 'Test successful. Do you want to continue?',
+                    ok: 'Yes'
+                )
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo 'Production deployment approved'
+                sh 'docker compose up -d'
+            }
         }
     }
 
-    stage('Test') {
-        steps {
-            sh 'docker compose -f compose.test.yaml up -d'
-
-            sh 'docker compose -f compose.test.yaml ps'
-
-            sh 'curl -f http://localhost:8081'
+    post {
+        always {
+            echo 'Pipeline finished'
         }
-    }
 
-    stage('Approval') {
-        steps {
-            input(
-                message: 'Test successful. Deploy to Production?',
-                ok: 'YES'
-            )
+        success {
+            echo 'Pipeline successful'
         }
-    }
 
-    stage('Production') {
-        steps {
-            sh 'docker compose -f compose.prod.yaml up -d'
-
-            sh 'docker compose -f compose.prod.yaml ps'
+        failure {
+            echo 'Pipeline failed'
         }
     }
 }
-
-post {
-    always {
-        echo 'Pipeline finished'
-    }
-
-    success {
-        echo 'Pipeline successful'
-    }
-
-    failure {
-        echo 'Pipeline failed'
-    }
-}
-
-
-}
+```
