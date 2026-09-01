@@ -22,7 +22,7 @@ pipeline {
             }
         }
     }
-    post{
+    post {
         always{
             echo 'finised oipli'
             
@@ -36,7 +36,7 @@ pipeline {
 
 
 
-    }
+       }
     
 
 }
