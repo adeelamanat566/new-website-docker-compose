@@ -1,14 +1,15 @@
 services:
+
   mysql-test:
     image: mysql:8.4
     container_name: grocery-mysql-test
     environment:
-      MYSQL_ROOT_PASSWORD: adeel
+      MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: grocery_db
-    volumes:
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql  
     ports:
       - "3307:3306"
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
   flask-test:
     build: .
@@ -16,7 +17,7 @@ services:
     environment:
       MYSQL_HOST: mysql-test
       MYSQL_USER: root
-      MYSQL_PASSWORD: adeel
+      MYSQL_PASSWORD: root
       MYSQL_DATABASE: grocery_db
     ports:
       - "8081:5000"
