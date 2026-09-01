@@ -1,38 +1,43 @@
 pipeline {
-    agent any
-
-    stages {
-
-        stage('Build') {
-            steps {
-                sh 'docker compose build'
+    agent any{
+        stages{
+            stage(buil){
+                step{
+                    sh 'docker compose config'
+                    sh 'docker compose build -t '
+                }
             }
-        }
-
-        stage('Deploy') {
-            steps {
-                sh 'docker compose up -d'
+            stage(test){
+                step{
+                    input(
+                        message: 'do you wantcontinues?',
+                        ok: 'yes we should'
+                    )
+                }
             }
-        }
-
-        stage('Check') {
-            steps {
-                sh 'docker compose ps'
+            stage(deploy){
+                step{
+                    sh 'docker compose run -d'
+                }
             }
         }
     }
-
-    post {
-        always {
-            echo 'Pipeline finished'
+    post{
+        always{
+            echo 'finised oipli'
+            
+        }
+        success{
+            echo 'success'
+        }
+        failure{
+            echo 'failure'
         }
 
-        success {
-            echo 'Pipeline successful'
-        }
 
-        failure {
-            echo 'Pipeline failed'
-        }
+
+
     }
+
 }
+
