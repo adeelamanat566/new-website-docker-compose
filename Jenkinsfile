@@ -1,43 +1,45 @@
+```groovy
 pipeline {
     agent any
-    stages{
-        stage('Build'){
+
+    stages {
+
+        stage('Build') {
             steps {
                 sh 'docker compose config'
-                sh 'docker compose build  '
-                }
+                sh 'docker compose build'
             }
-        stage(test){
+        }
+
+        stage('Test') {
             steps {
                 input(
-                    message: 'do you wantcontinues?',
-                    ok: 'yes we should'
-                    )
-                }
+                    message: 'Do you want to continue?',
+                    ok: 'Yes'
+                )
             }
-        stage(deploy){
+        }
+
+        stage('Deploy') {
             steps {
                 sh 'docker compose up -d'
-                }
             }
         }
     }
+
     post {
-        always{
-            echo 'finised oipli'
-            
-        }
-        success{
-            echo 'success'
-        }
-        failure{
-            echo 'failure'
+
+        always {
+            echo 'Finished pipeline'
         }
 
+        success {
+            echo 'Success'
+        }
 
-
-       }
-    
-
+        failure {
+            echo 'Failure'
+        }
+    }
 }
-
+```
