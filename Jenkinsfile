@@ -1,23 +1,23 @@
 pipeline {
-    agent any{
-        stages{
-            stage(buil){
-                step{
-                    sh 'docker compose config'
-                    sh 'docker compose build -t '
+    agent any
+    stages{
+        stage('Build'){
+            steps {
+                sh 'docker compose config'
+                sh 'docker compose build  '
                 }
             }
-            stage(test){
-                step{
-                    input(
-                        message: 'do you wantcontinues?',
-                        ok: 'yes we should'
+        stage(test){
+            steps {
+                input(
+                    message: 'do you wantcontinues?',
+                    ok: 'yes we should'
                     )
                 }
             }
-            stage(deploy){
-                step{
-                    sh 'docker compose run -d'
+        stage(deploy){
+            steps {
+                sh 'docker compose up -d'
                 }
             }
         }
@@ -37,7 +37,7 @@ pipeline {
 
 
 
-    }
+    
 
 }
 
