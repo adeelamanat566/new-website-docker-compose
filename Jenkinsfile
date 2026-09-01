@@ -1,45 +1,56 @@
-
 pipeline {
-    agent any
+agent any
 
-    stages {
+```
+stages {
 
-        stage('Build') {
-            steps {
-                sh 'docker compose config'
-                sh 'docker compose build'
-            }
-        }
-
-        stage('Test') {
-            steps {
-                input(
-                    message: 'Do you want to continue?',
-                    ok: 'Yes'
-                )
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                sh 'docker compose up -d'
-            }
+    stage('Build') {
+        steps {
+            sh 'docker compose -f compose.test.yaml build'
         }
     }
 
-    post {
+    stage('Test') {
+        steps {
+            sh 'docker compose -f compose.test.yaml up -d'
 
-        always {
-            echo 'Finished pipeline'
+            sh 'docker compose -f compose.test.yaml ps'
+
+            sh 'curl -f http://localhost:8081'
         }
+    }
 
-        success {
-            echo 'Success'
+    stage('Approval') {
+        steps {
+            input(
+                message: 'Test successful. Deploy to Production?',
+                ok: 'YES'
+            )
         }
+    }
 
-        failure {
-            echo 'Failure'
+    stage('Production') {
+        steps {
+            sh 'docker compose -f compose.prod.yaml up -d'
+
+            sh 'docker compose -f compose.prod.yaml ps'
         }
     }
 }
 
+post {
+    always {
+        echo 'Pipeline finished'
+    }
+
+    success {
+        echo 'Pipeline successful'
+    }
+
+    failure {
+        echo 'Pipeline failed'
+    }
+}
+```
+
+}
